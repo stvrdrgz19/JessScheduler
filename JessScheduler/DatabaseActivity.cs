@@ -7,6 +7,7 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace JessScheduler
 {
@@ -19,8 +20,8 @@ namespace JessScheduler
 
 		public static void CreateDatabaseFile()
 		{
-			//SQLiteConnection.CreateFile(String.Format(@"{0}\Files\Database.db", Environment.CurrentDirectory));
-			SQLiteConnection.CreateFile(String.Format(@"{0}\Files\Database.db", @"C:\Users\stvrd\Downloads\Test"));
+			SQLiteConnection.CreateFile(String.Format(@"{0}\Files\Database.db", Environment.CurrentDirectory));
+			//SQLiteConnection.CreateFile(String.Format(@"{0}\Files\Database.db", @"C:\Users\stvrd\Downloads\Test"));
 			CreateTable();
 		}
 
@@ -35,8 +36,7 @@ namespace JessScheduler
 				Name TEXT NOT NULL,
 				Phone TEXT NOT NULL,
 				Address TEXT NOT NULL,
-				Date TEXT NOT NULL,
-				Time TEXT NOT NULL,
+				DateTime TEXT NOT NULL,
 				PRIMARY KEY(Id AUTOINCREMENT)
 			);";
 
@@ -44,12 +44,31 @@ namespace JessScheduler
 			command.ExecuteNonQuery();
 		}
 
-		public static List<Appointment> GetAppointments()
+		public static List<Appointment> GetAppointments(ComboBox cb, string filterValue, bool showScheduled, bool showNotScheduled)
 		{
-			List <Appointment> appointments = new List<Appointment>();
 			using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
 			{
-				return conn.Query<Appointment>("Select Scheduled, Name, Phone, Address, Date, Time FROM Appointments", new DynamicParameters()).ToList();
+				string scriptStart = "Select Scheduled, Name, Phone, Address, DateTime FROM Appointments";
+				string whereClause = "";
+				string orderBy = "ORDER BY DateTime";
+
+				if (!String.IsNullOrWhiteSpace(filterValue))
+                {
+					whereClause = String.Format("WHERE {0} LIKE '%{1}%'", cb.Text, filterValue);
+					if (showScheduled && !showNotScheduled)
+						whereClause += " AND Scheduled = 1";
+					else if (!showScheduled && showNotScheduled)
+						whereClause += " AND Scheduled = 0";
+				}
+				else
+				{
+					if (showScheduled && !showNotScheduled)
+						whereClause += "WHERE Scheduled = 1";
+					else if (!showScheduled && showNotScheduled)
+						whereClause += "WHERE Scheduled = 0";
+				}
+				string script = String.Format("{0} {1} {2}", scriptStart, whereClause, orderBy);
+				return conn.Query<Appointment>(script, new DynamicParameters()).ToList();
 			}
 		}
 	}
