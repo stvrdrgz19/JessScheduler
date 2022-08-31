@@ -23,6 +23,11 @@ namespace JessScheduler
 			dateFrom.Value = dateFrom.Value.AddDays(-7);
 		}
 
+        public static void ResetFields()
+		{
+
+		}
+
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			SetDefaultValues();
@@ -45,30 +50,15 @@ namespace JessScheduler
             appointment.Name = tbName.Text;
             appointment.Phone = tbPhone.Text;
             appointment.Address = tbAddress.Text;
-            if (!checkScheduled.Checked)
-            {
+            appointment.Status = cbStatus.Text;
+            if (appointment.Status == "Scheduled")
                 appointment.DateTime = dateScheduleDateTime.Value;
-                appointment.Scheduled = true;
-            }
-            else
-                appointment.Scheduled = false;
+            appointment.Notes = tbNotes.Text;
 
             Appointment.SaveAppointment(appointment, lvAppointments, cbFilterBy, tbFilterBy.Text, checkShowScheduled.Checked, checkShowNotScheduled.Checked);
-            if (checkScheduled.Checked)
-            {
-                checkScheduled.Checked = false;
-            }
+            ResetFields();
             return;
 		}
-
-        private void checkScheduled_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkScheduled.Checked)
-                dateScheduleDateTime.Enabled = false;
-            else
-                dateScheduleDateTime.Enabled = true;
-            return;
-        }
 
         private void checkShowScheduled_CheckedChanged(object sender, EventArgs e)
         {

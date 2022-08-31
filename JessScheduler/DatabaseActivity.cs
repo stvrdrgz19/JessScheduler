@@ -53,7 +53,7 @@ namespace JessScheduler
 				string orderBy = "ORDER BY DateTime";
 
 				if (!String.IsNullOrWhiteSpace(filterValue))
-                {
+				{
 					whereClause = String.Format("WHERE {0} LIKE '%{1}%'", cb.Text, filterValue);
 					if (showScheduled && !showNotScheduled)
 						whereClause += " AND Scheduled = 1";
@@ -66,6 +66,67 @@ namespace JessScheduler
 						whereClause += "WHERE Scheduled = 1";
 					else if (!showScheduled && showNotScheduled)
 						whereClause += "WHERE Scheduled = 0";
+				}
+				string script = String.Format("{0} {1} {2}", scriptStart, whereClause, orderBy);
+				return conn.Query<Appointment>(script, new DynamicParameters()).ToList();
+			}
+		}
+
+		public static List<Appointment> GetAppointmentsX(ComboBox cb, string filterValue, bool scheduled, bool notScheduled, bool onHold, bool cancelled)
+		{
+			using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
+			{
+				List<string> statuses = new List<string>();
+				if (scheduled)
+					statuses.Add("Scheduled");
+				if (notScheduled)
+					statuses.Add("Not Scheduled");
+				if (onHold)
+					statuses.Add("On Hold");
+				if (cancelled)
+					statuses.Add("Cancelled");
+
+				string scriptStart = "Select Scheduled, Name, Phone, Address, DateTime FROM Appointments";
+				string whereClause = "";
+				string orderBy = "ORDER BY DateTime";
+
+				if (!String.IsNullOrWhiteSpace(filterValue))
+				{
+					whereClause = String.Format("WHERE {0} LIKE '%{1}%'", cb.Text, filterValue);
+
+					switch (statuses.Count)
+					{
+						case 1:
+							whereClause += String.Format(" AND Status = '{0}'", statuses[0]);
+							break;
+						case 2:
+							whereClause += String.Format(" AND Status IN ('{0}', '{1}')", statuses[0], statuses[1]);
+							break;
+						case 3:
+							whereClause += String.Format(" AND Status IN ('{0}', '{1}', '{2}')", statuses[0], statuses[1], statuses[2]);
+							break;
+						case 4:
+							whereClause += String.Format(" AND Status IN ('{0}', '{1}', '{2}', '{3}')", statuses[0], statuses[1], statuses[2], statuses[3]);
+							break;
+					}
+				}
+				else
+				{
+					switch (statuses.Count)
+					{
+						case 1:
+							whereClause += String.Format("WHERE Status = '{0}'", statuses[0]);
+							break;
+						case 2:
+							whereClause += String.Format("WHERE Status IN ('{0}', '{1}')", statuses[0], statuses[1]);
+							break;
+						case 3:
+							whereClause += String.Format("WHERE Status IN ('{0}', '{1}', '{2}')", statuses[0], statuses[1], statuses[2]);
+							break;
+						case 4:
+							whereClause += String.Format("WHERE Status IN ('{0}', '{1}', '{2}', '{3}')", statuses[0], statuses[1], statuses[2], statuses[3]);
+							break;
+					}
 				}
 				string script = String.Format("{0} {1} {2}", scriptStart, whereClause, orderBy);
 				return conn.Query<Appointment>(script, new DynamicParameters()).ToList();

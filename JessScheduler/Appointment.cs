@@ -16,25 +16,16 @@ namespace JessScheduler
 		public string Phone { get; set; }
 		public string Address { get; set; }
 		public DateTime DateTime { get; set; }
-		public bool Scheduled { get; set; }
+		public string Status { get; set; }
+		public string Notes { get; set; }
 
 		public static void SaveAppointment(Appointment appointment, ListView lv, ComboBox cb, string filterBy, bool showScheduled, bool showNotScheduled)
 		{
 			using (IDbConnection conn = new SQLiteConnection(DatabaseActivity.LoadConnectionString()))
 			{
-				conn.Execute(@"INSERT INTO Appointments (
-					Scheduled
-					,Name
-					,Phone
-					,Address
-					,DateTime
-					) VALUES (
-					@Scheduled
-					,@Name
-					,@Phone
-					,@Address
-					,@DateTime
-					)", appointment);
+				conn.Execute(@"INSERT INTO Appointments (Name, Phone, Address, DateTime, Status) 
+					VALUES (@Name, @Phone, @Address, @DateTime, @Status)",
+					appointment);
 			}
 			LoadAppointments(lv, cb, filterBy, showScheduled, showNotScheduled);
 		}
@@ -45,14 +36,24 @@ namespace JessScheduler
 			List<Appointment> appintments = DatabaseActivity.GetAppointments(cb, filterBy, showScheduled, showNotScheduled);
 			foreach (Appointment appointment in appintments)
 			{
-				ListViewItem app = new ListViewItem(appointment.Scheduled.ToString());
-				app.SubItems.Add(appointment.Name);
+				ListViewItem app = new ListViewItem(appointment.Name);
 				app.SubItems.Add(appointment.Phone);
 				app.SubItems.Add(appointment.Address);
-				if (appointment.Scheduled)
-					app.SubItems.Add(appointment.DateTime.ToString("MM/dd/yyyy hh:mm tt"));
-				else
-					app.SubItems.Add("NOT SCHEDULED");
+				switch(appointment.Status)
+				{
+					case "Scheduled":
+						app.SubItems.Add(appointment.DateTime.ToString("MM/dd/yyyy hh:mm tt"));
+						break;
+					case "Not Scheduled":
+						app.SubItems.Add("NOT SCHEDULED");
+						break;
+					case "On Hold":
+						app.SubItems.Add("ON HOLD");
+						break;
+					case "Cancelled":
+						app.SubItems.Add("CANCELLED");
+						break;
+				}
 				lv.Items.Add(app);
 			}
 		}
