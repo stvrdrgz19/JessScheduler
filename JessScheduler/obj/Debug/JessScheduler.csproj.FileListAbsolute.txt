@@ -1,0 +1,15 @@
+C:\Users\stvrd\source\repos\JessScheduler\JessScheduler\bin\Debug\JessScheduler.exe.config
+C:\Users\stvrd\source\repos\JessScheduler\JessScheduler\bin\Debug\JessScheduler.exe
+C:\Users\stvrd\source\repos\JessScheduler\JessScheduler\bin\Debug\JessScheduler.pdb
+C:\Users\stvrd\source\repos\JessScheduler\JessScheduler\obj\Debug\JessScheduler.csprojAssemblyReference.cache
+C:\Users\stvrd\source\repos\JessScheduler\JessScheduler\obj\Debug\JessScheduler.Form1.resources
+C:\Users\stvrd\source\repos\JessScheduler\JessScheduler\obj\Debug\JessScheduler.Properties.Resources.resources
+C:\Users\stvrd\source\repos\JessScheduler\JessScheduler\obj\Debug\JessScheduler.csproj.GenerateResource.cache
+C:\Users\stvrd\source\repos\JessScheduler\JessScheduler\obj\Debug\JessScheduler.csproj.CoreCompileInputs.cache
+C:\Users\stvrd\source\repos\JessScheduler\JessScheduler\obj\Debug\JessScheduler.exe
+C:\Users\stvrd\source\repos\JessScheduler\JessScheduler\obj\Debug\JessScheduler.pdb
+C:\Users\stvrd\source\repos\JessScheduler\JessScheduler\bin\Debug\Dapper.dll
+C:\Users\stvrd\source\repos\JessScheduler\JessScheduler\bin\Debug\System.Data.SQLite.dll
+C:\Users\stvrd\source\repos\JessScheduler\JessScheduler\bin\Debug\Dapper.xml
+C:\Users\stvrd\source\repos\JessScheduler\JessScheduler\bin\Debug\System.Data.SQLite.xml
+C:\Users\stvrd\source\repos\JessScheduler\JessScheduler\obj\Debug\JessScheduler.csproj.CopyComplete
