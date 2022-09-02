@@ -20,18 +20,42 @@ namespace JessScheduler
 		public void SetDefaultValues()
 		{
             cbFilterBy.SelectedIndex = cbFilterBy.FindStringExact("Name");
-			dateFrom.Value = dateFrom.Value.AddDays(-7);
-		}
+			dateStartDate.Value = dateStartDate.Value.AddDays(-7);
+            cbStatus.SelectedIndex = cbStatus.FindStringExact("Scheduled");
+        }
 
-        public static void ResetFields()
+        public void LoadAppointments()
+        {
+            LoadSchema load = new LoadSchema(
+                lvAppointments,
+                cbFilterBy,
+                tbFilterBy.Text,
+                checkShowScheduled.Checked,
+                checkShowNotScheduled.Checked,
+                checkOnHold.Checked,
+                checkCancelled.Checked,
+                dateStartDate.Value,
+                dateEndDate.Value
+                );
+
+            Appointment.LoadAppointments(load);
+            return;
+        }
+
+        public void ResetFields()
 		{
-
+            tbName.Text = "";
+            tbPhone.Text = "";
+            tbAddress.Text = "";
+            dateScheduleDateTime.Value = DateTime.Now;
+            cbStatus.SelectedIndex = cbStatus.FindStringExact("Scheduled");
+            tbNotes.Text = "";
 		}
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			SetDefaultValues();
-            Appointment.LoadAppointments(lvAppointments, cbFilterBy, tbFilterBy.Text, checkShowScheduled.Checked, checkShowNotScheduled.Checked);
+            LoadAppointments();
             return;
 		}
 
@@ -55,32 +79,65 @@ namespace JessScheduler
                 appointment.DateTime = dateScheduleDateTime.Value;
             appointment.Notes = tbNotes.Text;
 
-            Appointment.SaveAppointment(appointment, lvAppointments, cbFilterBy, tbFilterBy.Text, checkShowScheduled.Checked, checkShowNotScheduled.Checked);
+            LoadSchema load = new LoadSchema(
+                lvAppointments,
+                cbFilterBy,
+                tbFilterBy.Text,
+                checkShowScheduled.Checked,
+                checkShowNotScheduled.Checked,
+                checkOnHold.Checked,
+                checkCancelled.Checked,
+                dateStartDate.Value,
+                dateEndDate.Value
+                );
+
+            Appointment.SaveAppointment(appointment, load);
             ResetFields();
             return;
 		}
 
         private void checkShowScheduled_CheckedChanged(object sender, EventArgs e)
         {
-            Appointment.LoadAppointments(lvAppointments, cbFilterBy, tbFilterBy.Text, checkShowScheduled.Checked, checkShowNotScheduled.Checked);
+            LoadAppointments();
             return;
         }
 
         private void checkShowNotScheduled_CheckedChanged(object sender, EventArgs e)
         {
-            Appointment.LoadAppointments(lvAppointments, cbFilterBy, tbFilterBy.Text, checkShowScheduled.Checked, checkShowNotScheduled.Checked);
+            LoadAppointments();
             return;
         }
 
         private void cbFilterBy_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Appointment.LoadAppointments(lvAppointments, cbFilterBy, tbFilterBy.Text, checkShowScheduled.Checked, checkShowNotScheduled.Checked);
+            LoadAppointments();
             return;
         }
 
         private void tbFilterBy_TextChanged(object sender, EventArgs e)
         {
-            Appointment.LoadAppointments(lvAppointments, cbFilterBy, tbFilterBy.Text, checkShowScheduled.Checked, checkShowNotScheduled.Checked);
+            LoadAppointments();
+            return;
+        }
+
+        private void checkOnHold_CheckedChanged(object sender, EventArgs e)
+        {
+            LoadAppointments();
+            return;
+        }
+
+        private void checkCancelled_CheckedChanged(object sender, EventArgs e)
+        {
+            LoadAppointments();
+            return;
+        }
+
+        private void cbStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbStatus.Text != "Scheduled")
+                dateScheduleDateTime.Enabled = false;
+            else 
+                dateScheduleDateTime.Enabled = true;
             return;
         }
     }

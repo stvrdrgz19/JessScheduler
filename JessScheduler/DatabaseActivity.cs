@@ -32,11 +32,12 @@ namespace JessScheduler
 
 			string appointments = @"CREATE TABLE Appointments (
 				Id INTEGER NOT NULL UNIQUE,
-				Scheduled INTEGER NOT NULL,
 				Name TEXT NOT NULL,
 				Phone TEXT NOT NULL,
 				Address TEXT NOT NULL,
+				Status TEXT NOT NULL,
 				DateTime TEXT NOT NULL,
+				Notes TEXT NOT NULL,
 				PRIMARY KEY(Id AUTOINCREMENT)
 			);";
 
@@ -72,27 +73,27 @@ namespace JessScheduler
 			}
 		}
 
-		public static List<Appointment> GetAppointmentsX(ComboBox cb, string filterValue, bool scheduled, bool notScheduled, bool onHold, bool cancelled)
+		public static List<Appointment> GetAppointmentsX(LoadSchema loadSchema)
 		{
 			using (IDbConnection conn = new SQLiteConnection(LoadConnectionString()))
 			{
 				List<string> statuses = new List<string>();
-				if (scheduled)
+				if (loadSchema.ShowScheduled)
 					statuses.Add("Scheduled");
-				if (notScheduled)
+				if (loadSchema.ShowNotScheduled)
 					statuses.Add("Not Scheduled");
-				if (onHold)
+				if (loadSchema.OnHold)
 					statuses.Add("On Hold");
-				if (cancelled)
+				if (loadSchema.Cancelled)
 					statuses.Add("Cancelled");
 
-				string scriptStart = "Select Scheduled, Name, Phone, Address, DateTime FROM Appointments";
+				string scriptStart = "Select Name, Phone, Address, Status, DateTime, Notes FROM Appointments";
 				string whereClause = "";
-				string orderBy = "ORDER BY DateTime";
+				string orderBy = " ORDER BY DateTime";
 
-				if (!String.IsNullOrWhiteSpace(filterValue))
+				if (!String.IsNullOrWhiteSpace(loadSchema.FilterByValue))
 				{
-					whereClause = String.Format("WHERE {0} LIKE '%{1}%'", cb.Text, filterValue);
+					whereClause = String.Format("WHERE {0} LIKE '%{1}%'", loadSchema.FilterByField.Text, loadSchema.FilterByValue);
 
 					switch (statuses.Count)
 					{

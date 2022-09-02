@@ -19,21 +19,21 @@ namespace JessScheduler
 		public string Status { get; set; }
 		public string Notes { get; set; }
 
-		public static void SaveAppointment(Appointment appointment, ListView lv, ComboBox cb, string filterBy, bool showScheduled, bool showNotScheduled)
+		public static void SaveAppointment(Appointment appointment, LoadSchema loadSchema)
 		{
 			using (IDbConnection conn = new SQLiteConnection(DatabaseActivity.LoadConnectionString()))
 			{
-				conn.Execute(@"INSERT INTO Appointments (Name, Phone, Address, DateTime, Status) 
-					VALUES (@Name, @Phone, @Address, @DateTime, @Status)",
+				conn.Execute(@"INSERT INTO Appointments (Name, Phone, Address, Status, DateTime, Notes) 
+					VALUES (@Name, @Phone, @Address, @Status, @DateTime, @Notes)",
 					appointment);
 			}
-			LoadAppointments(lv, cb, filterBy, showScheduled, showNotScheduled);
+			LoadAppointments(loadSchema);
 		}
 
-		public static void LoadAppointments(ListView lv, ComboBox cb, string filterBy, bool showScheduled, bool showNotScheduled)
+		public static void LoadAppointments(LoadSchema loadSchema)
 		{
-			lv.Items.Clear();
-			List<Appointment> appintments = DatabaseActivity.GetAppointments(cb, filterBy, showScheduled, showNotScheduled);
+			loadSchema.ScheduleList.Items.Clear();
+			List<Appointment> appintments = DatabaseActivity.GetAppointmentsX(loadSchema);
 			foreach (Appointment appointment in appintments)
 			{
 				ListViewItem app = new ListViewItem(appointment.Name);
@@ -54,7 +54,7 @@ namespace JessScheduler
 						app.SubItems.Add("CANCELLED");
 						break;
 				}
-				lv.Items.Add(app);
+				loadSchema.ScheduleList.Items.Add(app);
 			}
 		}
 	}
