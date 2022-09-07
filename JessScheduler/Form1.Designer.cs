@@ -56,6 +56,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.checkCancelled = new System.Windows.Forms.CheckBox();
+            this.checkOnHold = new System.Windows.Forms.CheckBox();
             this.checkShowNotScheduled = new System.Windows.Forms.CheckBox();
             this.checkShowScheduled = new System.Windows.Forms.CheckBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -63,8 +65,9 @@
             this.label8 = new System.Windows.Forms.Label();
             this.cbFilterBy = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.checkOnHold = new System.Windows.Forms.CheckBox();
-            this.checkCancelled = new System.Windows.Forms.CheckBox();
+            this.chId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.btnNew = new System.Windows.Forms.Button();
+            this.chNotes = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -74,7 +77,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 27);
+            this.label2.Location = new System.Drawing.Point(13, 37);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(33, 13);
             this.label2.TabIndex = 2;
@@ -82,24 +85,28 @@
             // 
             // dateStartDate
             // 
-            this.dateStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateStartDate.Location = new System.Drawing.Point(47, 24);
+            this.dateStartDate.CustomFormat = "MM/dd/yyyy";
+            this.dateStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateStartDate.Location = new System.Drawing.Point(47, 34);
             this.dateStartDate.Name = "dateStartDate";
             this.dateStartDate.Size = new System.Drawing.Size(94, 20);
             this.dateStartDate.TabIndex = 3;
+            this.dateStartDate.ValueChanged += new System.EventHandler(this.dateStartDate_ValueChanged);
             // 
             // dateEndDate
             // 
-            this.dateEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateEndDate.Location = new System.Drawing.Point(175, 24);
+            this.dateEndDate.CustomFormat = "MM/dd/yyyy";
+            this.dateEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateEndDate.Location = new System.Drawing.Point(175, 34);
             this.dateEndDate.Name = "dateEndDate";
             this.dateEndDate.Size = new System.Drawing.Size(94, 20);
             this.dateEndDate.TabIndex = 5;
+            this.dateEndDate.ValueChanged += new System.EventHandler(this.dateEndDate_ValueChanged);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(151, 27);
+            this.label3.Location = new System.Drawing.Point(151, 37);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(23, 13);
             this.label3.TabIndex = 4;
@@ -111,16 +118,20 @@
             this.chName,
             this.chPhone,
             this.chAddress,
-            this.chDateTime});
+            this.chDateTime,
+            this.chId,
+            this.chNotes});
             this.lvAppointments.FullRowSelect = true;
             this.lvAppointments.GridLines = true;
             this.lvAppointments.HideSelection = false;
             this.lvAppointments.Location = new System.Drawing.Point(16, 98);
+            this.lvAppointments.MultiSelect = false;
             this.lvAppointments.Name = "lvAppointments";
             this.lvAppointments.Size = new System.Drawing.Size(1080, 309);
             this.lvAppointments.TabIndex = 6;
             this.lvAppointments.UseCompatibleStateImageBehavior = false;
             this.lvAppointments.View = System.Windows.Forms.View.Details;
+            this.lvAppointments.SelectedIndexChanged += new System.EventHandler(this.lvAppointments_SelectedIndexChanged);
             // 
             // chName
             // 
@@ -144,7 +155,7 @@
             // 
             // btnEdit
             // 
-            this.btnEdit.Location = new System.Drawing.Point(15, 410);
+            this.btnEdit.Location = new System.Drawing.Point(92, 411);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(75, 23);
             this.btnEdit.TabIndex = 7;
@@ -154,21 +165,23 @@
             // 
             // btnDelete
             // 
-            this.btnDelete.Location = new System.Drawing.Point(92, 410);
+            this.btnDelete.Location = new System.Drawing.Point(169, 411);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(75, 23);
             this.btnDelete.TabIndex = 8;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnMaps
             // 
-            this.btnMaps.Location = new System.Drawing.Point(169, 410);
+            this.btnMaps.Location = new System.Drawing.Point(246, 411);
             this.btnMaps.Name = "btnMaps";
             this.btnMaps.Size = new System.Drawing.Size(75, 23);
             this.btnMaps.TabIndex = 9;
             this.btnMaps.Text = "Maps";
             this.btnMaps.UseVisualStyleBackColor = true;
+            this.btnMaps.Click += new System.EventHandler(this.btnMaps_Click);
             // 
             // groupBox1
             // 
@@ -307,7 +320,7 @@
             this.groupBox2.Controls.Add(this.dateStartDate);
             this.groupBox2.Location = new System.Drawing.Point(812, 10);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(284, 54);
+            this.groupBox2.Size = new System.Drawing.Size(284, 80);
             this.groupBox2.TabIndex = 11;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Date Filter";
@@ -324,6 +337,28 @@
             this.groupBox3.TabIndex = 12;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Scheduled Filter";
+            // 
+            // checkCancelled
+            // 
+            this.checkCancelled.AutoSize = true;
+            this.checkCancelled.Location = new System.Drawing.Point(130, 49);
+            this.checkCancelled.Name = "checkCancelled";
+            this.checkCancelled.Size = new System.Drawing.Size(103, 17);
+            this.checkCancelled.TabIndex = 3;
+            this.checkCancelled.Text = "Show Cancelled";
+            this.checkCancelled.UseVisualStyleBackColor = true;
+            this.checkCancelled.CheckedChanged += new System.EventHandler(this.checkCancelled_CheckedChanged);
+            // 
+            // checkOnHold
+            // 
+            this.checkOnHold.AutoSize = true;
+            this.checkOnHold.Location = new System.Drawing.Point(17, 49);
+            this.checkOnHold.Name = "checkOnHold";
+            this.checkOnHold.Size = new System.Drawing.Size(95, 17);
+            this.checkOnHold.TabIndex = 2;
+            this.checkOnHold.Text = "Show On Hold";
+            this.checkOnHold.UseVisualStyleBackColor = true;
+            this.checkOnHold.CheckedChanged += new System.EventHandler(this.checkOnHold_CheckedChanged);
             // 
             // checkShowNotScheduled
             // 
@@ -359,14 +394,14 @@
             this.groupBox4.Controls.Add(this.label1);
             this.groupBox4.Location = new System.Drawing.Point(16, 10);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(518, 54);
+            this.groupBox4.Size = new System.Drawing.Size(518, 80);
             this.groupBox4.TabIndex = 13;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Filter Name/Phone/Address";
             // 
             // tbFilterBy
             // 
-            this.tbFilterBy.Location = new System.Drawing.Point(221, 22);
+            this.tbFilterBy.Location = new System.Drawing.Point(221, 33);
             this.tbFilterBy.Name = "tbFilterBy";
             this.tbFilterBy.Size = new System.Drawing.Size(285, 20);
             this.tbFilterBy.TabIndex = 3;
@@ -375,7 +410,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(174, 24);
+            this.label8.Location = new System.Drawing.Point(174, 35);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(46, 13);
             this.label8.TabIndex = 2;
@@ -388,7 +423,7 @@
             "Name",
             "Phone",
             "Address"});
-            this.cbFilterBy.Location = new System.Drawing.Point(75, 21);
+            this.cbFilterBy.Location = new System.Drawing.Point(75, 32);
             this.cbFilterBy.Name = "cbFilterBy";
             this.cbFilterBy.Size = new System.Drawing.Size(91, 21);
             this.cbFilterBy.TabIndex = 1;
@@ -397,39 +432,38 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 24);
+            this.label1.Location = new System.Drawing.Point(7, 35);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(66, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Field to filter:";
             // 
-            // checkOnHold
+            // chId
             // 
-            this.checkOnHold.AutoSize = true;
-            this.checkOnHold.Location = new System.Drawing.Point(17, 49);
-            this.checkOnHold.Name = "checkOnHold";
-            this.checkOnHold.Size = new System.Drawing.Size(95, 17);
-            this.checkOnHold.TabIndex = 2;
-            this.checkOnHold.Text = "Show On Hold";
-            this.checkOnHold.UseVisualStyleBackColor = true;
-            this.checkOnHold.CheckedChanged += new System.EventHandler(this.checkOnHold_CheckedChanged);
+            this.chId.Text = "ID";
+            this.chId.Width = 0;
             // 
-            // checkCancelled
+            // btnNew
             // 
-            this.checkCancelled.AutoSize = true;
-            this.checkCancelled.Location = new System.Drawing.Point(130, 49);
-            this.checkCancelled.Name = "checkCancelled";
-            this.checkCancelled.Size = new System.Drawing.Size(103, 17);
-            this.checkCancelled.TabIndex = 3;
-            this.checkCancelled.Text = "Show Cancelled";
-            this.checkCancelled.UseVisualStyleBackColor = true;
-            this.checkCancelled.CheckedChanged += new System.EventHandler(this.checkCancelled_CheckedChanged);
+            this.btnNew.Location = new System.Drawing.Point(15, 411);
+            this.btnNew.Name = "btnNew";
+            this.btnNew.Size = new System.Drawing.Size(75, 23);
+            this.btnNew.TabIndex = 14;
+            this.btnNew.Text = "New";
+            this.btnNew.UseVisualStyleBackColor = true;
+            this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
+            // 
+            // chNotes
+            // 
+            this.chNotes.Text = "Notes";
+            this.chNotes.Width = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1113, 638);
+            this.ClientSize = new System.Drawing.Size(1113, 619);
+            this.Controls.Add(this.btnNew);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -491,6 +525,9 @@
 		private System.Windows.Forms.ComboBox cbStatus;
         private System.Windows.Forms.CheckBox checkCancelled;
         private System.Windows.Forms.CheckBox checkOnHold;
+        private System.Windows.Forms.ColumnHeader chId;
+        private System.Windows.Forms.Button btnNew;
+        private System.Windows.Forms.ColumnHeader chNotes;
     }
 }
 
