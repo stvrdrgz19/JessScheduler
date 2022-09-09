@@ -28,3 +28,4 @@ C:\Users\steve.rodriguez\source\repos\JessScheduler\JessScheduler\obj\Debug\Jess
 C:\Users\steve.rodriguez\source\repos\JessScheduler\JessScheduler\obj\Debug\JessScheduler.csproj.CopyComplete
 C:\Users\steve.rodriguez\source\repos\JessScheduler\JessScheduler\obj\Debug\JessScheduler.exe
 C:\Users\steve.rodriguez\source\repos\JessScheduler\JessScheduler\obj\Debug\JessScheduler.pdb
+C:\Users\steve.rodriguez\source\repos\JessScheduler\JessScheduler\obj\Debug\JessScheduler.VarianceForm.resources

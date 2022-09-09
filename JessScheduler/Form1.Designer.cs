@@ -38,16 +38,19 @@
             this.chPhone = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chAddress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chDateTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chNotes = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnMaps = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.cbStatus = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.tbNotes = new System.Windows.Forms.TextBox();
             this.dateScheduleDateTime = new System.Windows.Forms.DateTimePicker();
             this.btnSave = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
+            this.labelDateTime = new System.Windows.Forms.Label();
             this.tbAddress = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tbPhone = new System.Windows.Forms.TextBox();
@@ -65,9 +68,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.cbFilterBy = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.chId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnNew = new System.Windows.Forms.Button();
-            this.chNotes = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -153,6 +154,16 @@
             this.chDateTime.Text = "Date/Time";
             this.chDateTime.Width = 132;
             // 
+            // chId
+            // 
+            this.chId.Text = "ID";
+            this.chId.Width = 0;
+            // 
+            // chNotes
+            // 
+            this.chNotes.Text = "Notes";
+            this.chNotes.Width = 0;
+            // 
             // btnEdit
             // 
             this.btnEdit.Location = new System.Drawing.Point(92, 411);
@@ -185,12 +196,13 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnCancel);
             this.groupBox1.Controls.Add(this.cbStatus);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.tbNotes);
             this.groupBox1.Controls.Add(this.dateScheduleDateTime);
             this.groupBox1.Controls.Add(this.btnSave);
-            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.labelDateTime);
             this.groupBox1.Controls.Add(this.tbAddress);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.tbPhone);
@@ -203,6 +215,16 @@
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Add/Edit Appointment";
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(85, 134);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.TabIndex = 19;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // cbStatus
             // 
@@ -255,14 +277,14 @@
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // label7
+            // labelDateTime
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(7, 111);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(61, 13);
-            this.label7.TabIndex = 6;
-            this.label7.Text = "Date/Time:";
+            this.labelDateTime.AutoSize = true;
+            this.labelDateTime.Location = new System.Drawing.Point(7, 111);
+            this.labelDateTime.Name = "labelDateTime";
+            this.labelDateTime.Size = new System.Drawing.Size(61, 13);
+            this.labelDateTime.TabIndex = 6;
+            this.labelDateTime.Text = "Date/Time:";
             // 
             // tbAddress
             // 
@@ -438,11 +460,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Field to filter:";
             // 
-            // chId
-            // 
-            this.chId.Text = "ID";
-            this.chId.Width = 0;
-            // 
             // btnNew
             // 
             this.btnNew.Location = new System.Drawing.Point(15, 411);
@@ -452,11 +469,6 @@
             this.btnNew.Text = "New";
             this.btnNew.UseVisualStyleBackColor = true;
             this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
-            // 
-            // chNotes
-            // 
-            this.chNotes.Text = "Notes";
-            this.chNotes.Width = 0;
             // 
             // Form1
             // 
@@ -472,8 +484,11 @@
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnEdit);
             this.Controls.Add(this.lvAppointments);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Exam Scheduler";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
@@ -499,7 +514,7 @@
 		private System.Windows.Forms.Button btnMaps;
 		private System.Windows.Forms.GroupBox groupBox1;
 		private System.Windows.Forms.Button btnSave;
-		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.Label labelDateTime;
 		private System.Windows.Forms.TextBox tbAddress;
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.TextBox tbPhone;
@@ -528,6 +543,7 @@
         private System.Windows.Forms.ColumnHeader chId;
         private System.Windows.Forms.Button btnNew;
         private System.Windows.Forms.ColumnHeader chNotes;
+        private System.Windows.Forms.Button btnCancel;
     }
 }
 

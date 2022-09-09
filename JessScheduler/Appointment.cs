@@ -16,8 +16,8 @@ namespace JessScheduler
 		public string Name { get; set; }
 		public string Phone { get; set; }
 		public string Address { get; set; }
-		public DateTime DateTime { get; set; }
 		public string Status { get; set; }
+		public DateTime DateTime { get; set; }
 		public string Notes { get; set; }
 
 		public static void SaveAppointment(Appointment appointment, LoadSchema loadSchema, Filters filter)
@@ -31,6 +31,24 @@ namespace JessScheduler
 			LoadAppointments(loadSchema, filter);
 		}
 
+		public static void UpdateAppointment(Appointment appointment, LoadSchema loadSchema, Filters filter, int appointmentId)
+		{
+			using (IDbConnection conn = new SQLiteConnection(DatabaseActivity.LoadConnectionString()))
+            {
+				conn.Execute(String.Format("UPDATE Appointments SET Name = @Name, Phone = @Phone, Address = @Address, Status = @Status, DateTime = @DateTime, Notes = @Notes WHERE Id = {0}", appointmentId), appointment);
+            }
+			LoadAppointments(loadSchema, filter);
+        }
+
+		public static void DeleteAppointment(LoadSchema loadSchema, Filters filter, int appointmentId)
+		{
+			using (IDbConnection conn = new SQLiteConnection(DatabaseActivity.LoadConnectionString()))
+            {
+				conn.Execute(String.Format("DELETE FROM Appointments WHERE Id = {0}", appointmentId));
+            }
+			LoadAppointments(loadSchema, filter);
+		}
+
 		public static void LoadAppointments(LoadSchema loadSchema, Filters filter)
 		{
 			loadSchema.ScheduleList.Items.Clear();
@@ -41,7 +59,7 @@ namespace JessScheduler
 			foreach (Appointment appointment in appointments)
 			{
 				ListViewItem app = new ListViewItem(appointment.Name);
-				app.SubItems.Add(appointment.Phone);
+				app.SubItems.Add(Utilities.FormatPhoneNumber(appointment.Phone));
 				app.SubItems.Add(appointment.Address);
 				switch(appointment.Status)
 				{
